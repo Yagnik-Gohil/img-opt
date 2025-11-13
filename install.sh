@@ -31,8 +31,12 @@ TMP_FILE=$(mktemp)
 curl -fsSL "$RAW_URL" -o "$TMP_FILE"
 
 echo "🚀 Installing to $INSTALL_DIR/$BINARY ..."
-sudo mv "$TMP_FILE" "$INSTALL_DIR/$BINARY"
-sudo chmod +x "$INSTALL_DIR/$BINARY"
+if [[ "$OS" == *"mingw"* || "$OS" == *"cygwin"* || "$OS" == *"msys"* ]]; then
+    mv "$TMP_FILE" "$INSTALL_DIR/$BINARY"
+else
+    sudo mv "$TMP_FILE" "$INSTALL_DIR/$BINARY"
+    sudo chmod +x "$INSTALL_DIR/$BINARY"
+fi
 
 echo "✅ $BINARY installed successfully!"
 echo "Run '$BINARY --help' to get started."
